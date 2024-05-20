@@ -13,6 +13,12 @@ type TaskController struct {
 	TaskService *services.TaskService
 }
 
+var AllowedSortFields = map[string]bool{
+	"Priority":  true,
+	"Status":    true,
+	"CreatedAt": true,
+}
+
 func (uc *TaskController) CreateTask(c *gin.Context) {
 	var task models.Task
 
@@ -33,6 +39,30 @@ func (uc *TaskController) GetTasks(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+	c.JSON(http.StatusOK, tasks)
+}
+
+func (uc *TaskController) GetOrderedTasks(c *gin.Context) {
+	sortField := c.DefaultQuery("sort_field", "priority")
+	sortOrder := c.DefaultQuery("sort_order", "asc")
+
+	if _, ok := AllowedSortFields[sortField]; !ok {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid sort field"})
+		return
+	}
+
+	if sortOrder != "asc" && sortOrder != "desc" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "invalid sort order"})
+		return
+	}
+
+	orderClause := sortField + " " + sortOrder
+	tasks, err := uc.TaskService.GetSortedTasks(orderClause)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	c.JSON(http.StatusOK, tasks)
 }
 

@@ -1,5 +1,8 @@
 package models
 
+import (
+	"time"
+)
 
 type Task struct {
 	ID          uint   `json:"id" gorm:"primaryKey"`
@@ -7,4 +10,5 @@ type Task struct {
 	Description string `json:"description" binding:"required"`
 	Priority    int    `json:"priority" binding:"required"`
 	Status      string `json:"status" binding:"required"`
+	CreatedAt   time.Time
 }

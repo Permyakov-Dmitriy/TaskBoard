@@ -20,6 +20,12 @@ func (us *TaskService) GetTasks() ([]models.Task, error) {
 	return tasks, err
 }
 
+func (us *TaskService) GetSortedTasks(orderClause string) ([]models.Task, error) {
+	var tasks []models.Task
+	err := us.DB.Order(orderClause).Find(&tasks).Error
+	return tasks, err
+}
+
 func (us *TaskService) GetTask(id int) (models.Task, error) {
 	var task models.Task
 	err := us.DB.First(&task, id).Error
