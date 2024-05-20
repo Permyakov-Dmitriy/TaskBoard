@@ -1,7 +1,6 @@
 package services
 
 import (
-	"log"
 	"webapp/models"
 
 	"gorm.io/gorm"
@@ -24,7 +23,6 @@ func (us *UserService) GetUsers() ([]models.User, error) {
 func (us *UserService) GetUser(id int) (models.User, error) {
 	var user models.User
 	err := us.DB.First(&user, id).Error
-	log.Println(err)
 	return user, err
 }
 
