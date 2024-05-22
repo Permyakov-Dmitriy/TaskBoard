@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 	"webapp/models"
@@ -14,19 +15,22 @@ type TaskController struct {
 }
 
 var AllowedSortFields = map[string]bool{
-	"Priority":  true,
-	"Status":    true,
-	"CreatedAt": true,
+	"priority":   true,
+	"status":     true,
+	"created_at": true,
 }
 
 func (uc *TaskController) CreateTask(c *gin.Context) {
-	var task models.Task
-
-	if err := c.ShouldBindJSON(&task); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	validatedData, exists := c.Get("validatedData")
+	if !exists {
+		log.Println("Validated data not found")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Validated data not found"})
 		return
 	}
+
+	task := validatedData.(models.Task)
 	if err := uc.TaskService.CreateTask(&task); err != nil {
+		log.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}

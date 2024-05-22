@@ -1,42 +1,11 @@
-# syntax=docker/dockerfile:1
-
-ARG GO_VERSION=1.22.3
-FROM --platform=$BUILDPLATFORM golang:${GO_VERSION} AS build
-WORKDIR /src
-
-RUN --mount=type=cache,target=/go/pkg/mod/ \
-    --mount=type=bind,source=go.sum,target=go.sum \
-    --mount=type=bind,source=go.mod,target=go.mod \
-    go mod download -x
-
-ARG TARGETARCH
-RUN --mount=type=cache,target=/go/pkg/mod/ \
-    --mount=type=bind,target=. \
-    CGO_ENABLED=0 GOARCH=$TARGETARCH go build -o /bin/server .
-
-FROM alpine:latest AS final
-RUN --mount=type=cache,target=/var/cache/apk \
-    apk --update add \
-        ca-certificates \
-        tzdata \
-        && \
-        update-ca-certificates
-
-ARG UID=10001
-RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/nonexistent" \
-    --shell "/sbin/nologin" \
-    --no-create-home \
-    --uid "${UID}" \
-    appuser
-USER appuser
+# Choose whatever you want, version >= 1.16
+FROM golang:1.22-alpine
 
 WORKDIR /app
 
-COPY --from=build /bin/server /app/
-COPY .env /app/.env
+COPY . .
 
-EXPOSE 8080
-ENTRYPOINT [ "/app/server" ]
+RUN go install -mod=mod github.com/githubnemo/CompileDaemon
+RUN go mod tidy
+
+ENTRYPOINT CompileDaemon --build="go build -o build/goapp" -command="./build/goapp" -build-dir=/app -polling=true

@@ -2,6 +2,7 @@ package routes
 
 import (
 	"webapp/controllers"
+	"webapp/middleware"
 	"webapp/models"
 	"webapp/services"
 
@@ -17,7 +18,7 @@ func UsersRoutes(r *gin.RouterGroup, db *gorm.DB) {
 
 	r.GET("/", userController.GetUsers)
 	r.GET("/:id", userController.GetUser)
-	r.POST("/", userController.CreateUser)
-	r.PUT("/:id", userController.UpdateUser)
+	r.POST("/", middleware.ValidatorMiddleware[models.User](), userController.CreateUser)
+	r.PUT("/:id", middleware.ValidatorMiddleware[models.User](), userController.UpdateUser)
 	r.DELETE("/:id", userController.DeleteUser)
 }

@@ -2,6 +2,7 @@ package routes
 
 import (
 	"webapp/controllers"
+	"webapp/middleware"
 	"webapp/models"
 	"webapp/services"
 
@@ -17,7 +18,8 @@ func TasksRoutes(r *gin.RouterGroup, db *gorm.DB) {
 
 	r.GET("/", taskController.GetTasks)
 	r.GET("/:id", taskController.GetTask)
-	r.POST("/", taskController.CreateTask)
-	r.PUT("/:id", taskController.UpdateTask)
+	r.GET("/ordered", taskController.GetOrderedTasks)
+	r.POST("/", middleware.ValidatorMiddleware[models.Task](), taskController.CreateTask)
+	r.PUT("/:id", middleware.ValidatorMiddleware[models.Task](), taskController.UpdateTask)
 	r.DELETE("/:id", taskController.DeleteTask)
 }
