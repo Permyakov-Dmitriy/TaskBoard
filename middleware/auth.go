@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 	"webapp/config"
-	"webapp/controllers"
+	"webapp/utils"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -18,7 +18,7 @@ func AuthMiddleware(c *gin.Context) {
 		return
 	}
 
-	claims := &controllers.Claims{}
+	claims := &utils.Claims{}
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(config.GetConfig().JwtSecretKey), nil
 	})

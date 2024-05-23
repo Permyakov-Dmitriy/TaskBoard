@@ -17,11 +17,6 @@ type AuthController struct {
 	UserService *services.UserService
 }
 
-type Claims struct {
-	Username string `json:"username"`
-	jwt.StandardClaims
-}
-
 func (ac *AuthController) RegisterHandler(c *gin.Context) {
 	validated_data, exists := c.Get("validatedData")
 	validated_user_data := validated_data.(models.User)
@@ -98,7 +93,7 @@ func (ac *AuthController) RefreshHandler(c *gin.Context) {
 		return
 	}
 
-	claims := &Claims{}
+	claims := &utils.Claims{}
 	config := config.GetConfig()
 	refreshToken, err := jwt.ParseWithClaims(requestBody.RefreshToken, claims, func(token *jwt.Token) (interface{}, error) {
 		return config.RefreshSecretKey, nil
