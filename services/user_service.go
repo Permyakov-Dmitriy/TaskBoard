@@ -26,6 +26,12 @@ func (us *UserService) GetUser(id int) (models.User, error) {
 	return user, err
 }
 
+func (us *UserService) GetUserByEmail(email string) (models.User, error) {
+	var user models.User
+	err := us.DB.First(&user, "email = ?", email).Error
+	return user, err
+}
+
 func (us *UserService) SaveUpdatedUser(user *models.User) error {
 	err := us.DB.Save(&user).Error
 	return err

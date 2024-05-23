@@ -13,4 +13,7 @@ func RegisterRoutes(r *gin.Engine, db *gorm.DB) {
 
 	tasks := api.Group("/tasks")
 	TasksRoutes(tasks, db)
+
+	auth := api.Group("/auth")
+	AuthRoutes(auth, db)
 }

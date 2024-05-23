@@ -26,6 +26,4 @@ go.work
 
 .env
 
-**/build
-
-**/tmp
+build/

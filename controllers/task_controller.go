@@ -20,7 +20,7 @@ var AllowedSortFields = map[string]bool{
 	"created_at": true,
 }
 
-func (uc *TaskController) CreateTask(c *gin.Context) {
+func (tc *TaskController) CreateTask(c *gin.Context) {
 	validatedData, exists := c.Get("validatedData")
 	if !exists {
 		log.Println("Validated data not found")
@@ -29,7 +29,7 @@ func (uc *TaskController) CreateTask(c *gin.Context) {
 	}
 
 	task := validatedData.(models.Task)
-	if err := uc.TaskService.CreateTask(&task); err != nil {
+	if err := tc.TaskService.CreateTask(&task); err != nil {
 		log.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -37,8 +37,8 @@ func (uc *TaskController) CreateTask(c *gin.Context) {
 	c.JSON(http.StatusOK, task)
 }
 
-func (uc *TaskController) GetTasks(c *gin.Context) {
-	tasks, err := uc.TaskService.GetTasks()
+func (tc *TaskController) GetTasks(c *gin.Context) {
+	tasks, err := tc.TaskService.GetTasks()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -46,7 +46,7 @@ func (uc *TaskController) GetTasks(c *gin.Context) {
 	c.JSON(http.StatusOK, tasks)
 }
 
-func (uc *TaskController) GetOrderedTasks(c *gin.Context) {
+func (tc *TaskController) GetOrderedTasks(c *gin.Context) {
 	sortField := c.DefaultQuery("sort_field", "priority")
 	sortOrder := c.DefaultQuery("sort_order", "asc")
 
@@ -61,7 +61,7 @@ func (uc *TaskController) GetOrderedTasks(c *gin.Context) {
 	}
 
 	orderClause := sortField + " " + sortOrder
-	tasks, err := uc.TaskService.GetSortedTasks(orderClause)
+	tasks, err := tc.TaskService.GetSortedTasks(orderClause)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
@@ -70,7 +70,7 @@ func (uc *TaskController) GetOrderedTasks(c *gin.Context) {
 	c.JSON(http.StatusOK, tasks)
 }
 
-func (uc *TaskController) GetTask(c *gin.Context) {
+func (tc *TaskController) GetTask(c *gin.Context) {
 	task_id := c.Params.ByName("id")
 	id, err := strconv.Atoi(task_id)
 	if err != nil {
@@ -78,7 +78,7 @@ func (uc *TaskController) GetTask(c *gin.Context) {
 		return
 	}
 
-	task, err := uc.TaskService.GetTask(id)
+	task, err := tc.TaskService.GetTask(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -86,7 +86,7 @@ func (uc *TaskController) GetTask(c *gin.Context) {
 	c.JSON(http.StatusOK, task)
 }
 
-func (uc *TaskController) UpdateTask(c *gin.Context) {
+func (tc *TaskController) UpdateTask(c *gin.Context) {
 	task_id := c.Param("id")
 	id, err := strconv.Atoi(task_id)
 	if err != nil {
@@ -94,13 +94,13 @@ func (uc *TaskController) UpdateTask(c *gin.Context) {
 		return
 	}
 
-	task, err := uc.TaskService.GetTask(id)
+	task, err := tc.TaskService.GetTask(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Task not found"})
 		return
 	}
 
-	if err := uc.TaskService.SaveUpdatedTask(&task); err != nil {
+	if err := tc.TaskService.SaveUpdatedTask(&task); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -108,7 +108,7 @@ func (uc *TaskController) UpdateTask(c *gin.Context) {
 	c.JSON(http.StatusOK, task)
 }
 
-func (uc *TaskController) DeleteTask(c *gin.Context) {
+func (tc *TaskController) DeleteTask(c *gin.Context) {
 	task_id := c.Param("id")
 	id, err := strconv.Atoi(task_id)
 	if err != nil {
@@ -116,7 +116,7 @@ func (uc *TaskController) DeleteTask(c *gin.Context) {
 		return
 	}
 
-	if err := uc.TaskService.DeleteTask(id); err != nil {
+	if err := tc.TaskService.DeleteTask(id); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
