@@ -11,12 +11,8 @@ import (
 )
 
 func AuthRoutes(r *gin.RouterGroup, db *gorm.DB) {
-	authService := &services.AuthService{DB: db}
 	userService := &services.UserService{DB: db}
-	authController := &controllers.AuthController{
-		AuthService: authService,
-		UserService: userService,
-	}
+	authController := &controllers.AuthController{UserService: userService}
 
 	r.POST("/register", middleware.ValidatorMiddleware[models.User](), authController.RegisterHandler)
 	r.POST("/login", middleware.ValidatorMiddleware[models.User](), authController.LoginHandler)

@@ -14,7 +14,6 @@ import (
 )
 
 type AuthController struct {
-	AuthService *services.AuthService
 	UserService *services.UserService
 }
 
