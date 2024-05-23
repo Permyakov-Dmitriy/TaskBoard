@@ -37,6 +37,14 @@ func (ac *AuthController) RegisterHandler(c *gin.Context) {
 		return
 	}
 
+	hashed_password, err := utils.HashPassword(validated_user_data.Password)
+	if err != nil {
+		c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
+		return
+	}
+
+	validated_user_data.Password = hashed_password
+
 	if err := ac.UserService.CreateUser(&validated_user_data); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
@@ -60,8 +68,8 @@ func (ac *AuthController) LoginHandler(c *gin.Context) {
 		return
 	}
 
-	if user.Password != validated_user_data.Password {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid username or password"})
+	if check := utils.CheckPasswordHash(validated_user_data.Password, user.Password); !check {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid password"})
 		return
 	}
 
