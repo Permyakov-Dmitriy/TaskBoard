@@ -20,11 +20,14 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
 	if err := uc.UserService.CreateUser(&user); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, user)
+
+	res := utils.TransformSingleModelToResponse[models.UserResponse](&user)
+	c.JSON(http.StatusOK, res)
 }
 
 func (uc *UserController) GetUsers(c *gin.Context) {
@@ -33,6 +36,7 @@ func (uc *UserController) GetUsers(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+
 	res := utils.TransformSliceModelToResponse[models.UserResponse](users)
 	c.JSON(http.StatusOK, res)
 }
@@ -47,7 +51,6 @@ func (uc *UserController) GetUser(c *gin.Context) {
 	}
 
 	res := utils.TransformSingleModelToResponse[models.UserResponse](&user)
-
 	c.JSON(http.StatusOK, res)
 }
 
@@ -65,7 +68,8 @@ func (uc *UserController) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, user)
+	res := utils.TransformSingleModelToResponse[models.UserResponse](&user)
+	c.JSON(http.StatusOK, res)
 }
 
 func (uc *UserController) DeleteUser(c *gin.Context) {
