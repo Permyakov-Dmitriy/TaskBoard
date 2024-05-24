@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"net/http"
-	"strconv"
 	"webapp/models"
 	"webapp/services"
 
@@ -39,13 +38,8 @@ func (uc *UserController) GetUsers(c *gin.Context) {
 
 func (uc *UserController) GetUser(c *gin.Context) {
 	user_id := c.Params.ByName("id")
-	id, err := strconv.Atoi(user_id)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
-		return
-	}
 
-	user, err := uc.UserService.GetUser(id)
+	user, err := uc.UserService.GetUser(user_id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -60,13 +54,8 @@ func (uc *UserController) GetUser(c *gin.Context) {
 
 func (uc *UserController) UpdateUser(c *gin.Context) {
 	user_id := c.Param("id")
-	id, err := strconv.Atoi(user_id)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
-		return
-	}
 
-	user, err := uc.UserService.GetUser(id)
+	user, err := uc.UserService.GetUser(user_id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
 		return
@@ -82,13 +71,8 @@ func (uc *UserController) UpdateUser(c *gin.Context) {
 
 func (uc *UserController) DeleteUser(c *gin.Context) {
 	user_id := c.Param("id")
-	id, err := strconv.Atoi(user_id)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
-		return
-	}
 
-	if err := uc.UserService.DeleteUser(id); err != nil {
+	if err := uc.UserService.DeleteUser(user_id); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}

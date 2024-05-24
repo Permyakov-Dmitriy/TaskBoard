@@ -20,7 +20,7 @@ func (us *UserService) GetUsers() ([]models.User, error) {
 	return users, err
 }
 
-func (us *UserService) GetUser(id int) (models.User, error) {
+func (us *UserService) GetUser(id string) (models.User, error) {
 	var user models.User
 	err := us.DB.First(&user, id).Error
 	return user, err
