@@ -7,6 +7,7 @@ import (
 	"webapp/services"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jinzhu/copier"
 )
 
 type UserController struct {
@@ -50,11 +51,9 @@ func (uc *UserController) GetUser(c *gin.Context) {
 		return
 	}
 
-	user_response := models.UserResponse{
-		ID:    user.ID,
-		Name:  user.Username,
-		Email: user.Email,
-	}
+	var user_response models.UserResponse
+
+	copier.Copy(&user_response, &user)
 
 	c.JSON(http.StatusOK, user_response)
 }
