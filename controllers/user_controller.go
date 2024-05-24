@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"webapp/models"
 	"webapp/services"
+	"webapp/utils"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jinzhu/copier"
 )
 
 type UserController struct {
@@ -45,11 +45,13 @@ func (uc *UserController) GetUser(c *gin.Context) {
 		return
 	}
 
-	var user_response models.UserResponse
+	// var user_response models.UserResponse
 
-	copier.Copy(&user_response, &user)
+	// copier.Copy(&user_response, &user)
 
-	c.JSON(http.StatusOK, user_response)
+	res := utils.TransformSingleModelToResponse[models.UserResponse](&user)
+
+	c.JSON(http.StatusOK, res)
 }
 
 func (uc *UserController) UpdateUser(c *gin.Context) {
