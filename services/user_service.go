@@ -37,7 +37,7 @@ func (us *UserService) SaveUpdatedUser(user *models.User) error {
 	return err
 }
 
-func (us *UserService) DeleteUser(id int) error {
+func (us *UserService) DeleteUser(id string) error {
 	err := us.DB.Delete(&models.User{}, id).Error
 	return err
 }
