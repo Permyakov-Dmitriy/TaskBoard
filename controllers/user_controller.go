@@ -49,7 +49,14 @@ func (uc *UserController) GetUser(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, user)
+
+	user_response := models.UserResponse{
+		ID:    user.ID,
+		Name:  user.Username,
+		Email: user.Email,
+	}
+
+	c.JSON(http.StatusOK, user_response)
 }
 
 func (uc *UserController) UpdateUser(c *gin.Context) {
