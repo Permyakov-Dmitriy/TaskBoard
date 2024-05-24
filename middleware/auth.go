@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"log"
 	"net/http"
 	"webapp/config"
 	"webapp/utils"
@@ -22,16 +21,12 @@ func AuthMiddleware(c *gin.Context) {
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		return []byte(config.GetConfig().JwtSecretKey), nil
 	})
-	log.Println(token)
-	log.Println(claims.Username)
-	log.Println(token.Valid)
-
 	if err != nil || !token.Valid {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or expired token"})
 		c.Abort()
 		return
 	}
-	log.Println(claims.Username)
+
 	c.Set("username", claims.Username)
 	c.Next()
 }
