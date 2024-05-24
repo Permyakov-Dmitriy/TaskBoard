@@ -33,7 +33,8 @@ func (uc *UserController) GetUsers(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, users)
+	res := utils.TransformSliceModelToResponse[models.UserResponse](users)
+	c.JSON(http.StatusOK, res)
 }
 
 func (uc *UserController) GetUser(c *gin.Context) {
@@ -44,10 +45,6 @@ func (uc *UserController) GetUser(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
-
-	// var user_response models.UserResponse
-
-	// copier.Copy(&user_response, &user)
 
 	res := utils.TransformSingleModelToResponse[models.UserResponse](&user)
 
