@@ -26,8 +26,8 @@ func (tc *TaskController) CreateTask(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Validated data not found"})
 		return
 	}
-
 	task := validatedData.(models.Task)
+	
 	if err := tc.TaskService.CreateTask(&task); err != nil {
 		log.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

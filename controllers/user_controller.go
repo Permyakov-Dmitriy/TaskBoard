@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"log"
 	"net/http"
 	"webapp/models"
 	"webapp/services"
@@ -14,12 +15,13 @@ type UserController struct {
 }
 
 func (uc *UserController) CreateUser(c *gin.Context) {
-	var user models.User
-
-	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	validatedData, exists := c.Get("validatedData")
+	if !exists {
+		log.Println("Validated data not found")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Validated data not found"})
 		return
 	}
+	user := validatedData.(models.User)
 
 	if err := uc.UserService.CreateUser(&user); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
