@@ -35,3 +35,11 @@ TaskBoard — это backend проект для управления задач
    ```bash
    git clone https://github.com/Permyakov-Dmitriy/TaskBoard.git
    cd TaskBoard
+   ```
+
+2. Создайте файл .env и настройте переменные окружения;
+
+3. Соберите и запустите:
+   ```bash
+   docker compose up --build
+   ```
