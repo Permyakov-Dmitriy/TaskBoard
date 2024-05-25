@@ -3,7 +3,6 @@ package controllers
 import (
 	"log"
 	"net/http"
-	"strconv"
 	"webapp/models"
 	"webapp/services"
 
@@ -72,13 +71,7 @@ func (tc *TaskController) GetOrderedTasks(c *gin.Context) {
 
 func (tc *TaskController) GetTask(c *gin.Context) {
 	task_id := c.Params.ByName("id")
-	id, err := strconv.Atoi(task_id)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid task ID"})
-		return
-	}
-
-	task, err := tc.TaskService.GetTask(id)
+	task, err := tc.TaskService.GetTask(task_id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -88,13 +81,8 @@ func (tc *TaskController) GetTask(c *gin.Context) {
 
 func (tc *TaskController) UpdateTask(c *gin.Context) {
 	task_id := c.Param("id")
-	id, err := strconv.Atoi(task_id)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid task ID"})
-		return
-	}
 
-	task, err := tc.TaskService.GetTask(id)
+	task, err := tc.TaskService.GetTask(task_id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Task not found"})
 		return
@@ -110,13 +98,8 @@ func (tc *TaskController) UpdateTask(c *gin.Context) {
 
 func (tc *TaskController) DeleteTask(c *gin.Context) {
 	task_id := c.Param("id")
-	id, err := strconv.Atoi(task_id)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid task ID"})
-		return
-	}
 
-	if err := tc.TaskService.DeleteTask(id); err != nil {
+	if err := tc.TaskService.DeleteTask(task_id); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
