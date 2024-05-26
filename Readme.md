@@ -4,7 +4,7 @@
 ![Gin](https://img.shields.io/badge/Gin-%E2%9C%94%EF%B8%8F-green)
 ![GORM](https://img.shields.io/badge/GORM-%E2%9C%94%EF%B8%8F-green)
 ![Docker](https://img.shields.io/badge/Docker-%E2%9C%94%EF%B8%8F-blue)
-![PostgreSQL](https://img.shields.io/badge/Docker-%E2%9C%94%EF%B8%8F-blue)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-%E2%9C%94%EF%B8%8F-blue)
 
 TaskBoard — это backend для проекта по управлению задачами на проекте, похожий на GitHub issues, написанный на Go. 
 
