@@ -1,6 +1,6 @@
 # 🌟 TaskBoard 🌟
 
-![Go](https://img.shields.io/badge/Go-1.16%2B-blue)
+![Go](https://img.shields.io/badge/Go-1.18%2B-blue)
 ![Gin](https://img.shields.io/badge/Gin-%E2%9C%94%EF%B8%8F-green)
 ![GORM](https://img.shields.io/badge/GORM-%E2%9C%94%EF%B8%8F-green)
 ![Docker](https://img.shields.io/badge/Docker-%E2%9C%94%EF%B8%8F-blue)
