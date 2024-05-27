@@ -17,6 +17,14 @@ type AuthController struct {
 	UserService *services.UserService
 }
 
+// RegisterHandler godoc
+// @Summary      Registration
+// @Description  save User object
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  models.User
+// @Router       /auth/register [post]
 func (ac *AuthController) RegisterHandler(c *gin.Context) {
 	validated_data, exists := c.Get("validatedData")
 	validated_user_data := validated_data.(models.User)
