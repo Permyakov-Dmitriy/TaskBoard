@@ -55,6 +55,14 @@ func (ac *AuthController) RegisterHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "User registered successfully"})
 }
 
+// LoginHandler godoc
+// @Summary      Login
+// @Description  send username, password get tokens
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  models.TokensModel
+// @Router       /auth/login [post]
 func (ac *AuthController) LoginHandler(c *gin.Context) {
 	validated_data, exists := c.Get("validatedData")
 	validated_user_data := validated_data.(models.User)
@@ -92,6 +100,14 @@ func (ac *AuthController) LoginHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"access_token": accessToken, "refresh_token": refreshToken})
 }
 
+// RefreshHandler godoc
+// @Summary      Refresh tokens
+// @Description  save User object
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  models.TokenModel
+// @Router       /auth/refresh [post]
 func (ac *AuthController) RefreshHandler(c *gin.Context) {
 	var requestBody struct {
 		RefreshToken string `json:"refresh_token"`
