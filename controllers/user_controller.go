@@ -14,6 +14,14 @@ type UserController struct {
 	UserService *services.UserService
 }
 
+// CreateUser godoc
+// @Summary      Create new user
+// @Description
+// @Tags         User
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  models.UserResponse
+// @Router       /users [post]
 func (uc *UserController) CreateUser(c *gin.Context) {
 	validatedData, exists := c.Get("validatedData")
 	if !exists {
@@ -32,6 +40,14 @@ func (uc *UserController) CreateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+// GetUsers godoc
+// @Summary      Get list users
+// @Description
+// @Tags         User
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}  models.UserResponse
+// @Router       /users [get]
 func (uc *UserController) GetUsers(c *gin.Context) {
 	users, err := uc.UserService.GetUsers()
 	if err != nil {
@@ -43,6 +59,15 @@ func (uc *UserController) GetUsers(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+// GetUser godoc
+// @Summary      get user
+// @Description	 send id get user
+// @Tags         User
+// @Accept       json
+// @Produce      json
+// @Param id path int true "id user" example(1)
+// @Success      200  {object}  models.UserResponse
+// @Router       /users/{id} [get]
 func (uc *UserController) GetUser(c *gin.Context) {
 	user_id := c.Params.ByName("id")
 
@@ -56,6 +81,15 @@ func (uc *UserController) GetUser(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+// UpdateUser godoc
+// @Summary      update user
+// @Description	 send id update user
+// @Tags         User
+// @Accept       json
+// @Produce      json
+// @Param id path int true "id user" example(1)
+// @Success      200  {object}  models.UserResponse
+// @Router       /users/{id} [put]
 func (uc *UserController) UpdateUser(c *gin.Context) {
 	user_id := c.Param("id")
 
@@ -74,6 +108,15 @@ func (uc *UserController) UpdateUser(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+// DeleteUser godoc
+// @Summary      delete user
+// @Description	 send id delete user
+// @Tags         User
+// @Accept       json
+// @Produce      json
+// @Param id path int true "id user" example(1)
+// @Success      200  {object}  nil
+// @Router       /users/{id} [delete]
 func (uc *UserController) DeleteUser(c *gin.Context) {
 	user_id := c.Param("id")
 

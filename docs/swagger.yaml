@@ -1,4 +1,3 @@
-basePath: /api/v1
 definitions:
   models.TokenModel:
     properties:
@@ -26,22 +25,23 @@ definitions:
     - email
     - username
     type: object
-externalDocs:
-  description: OpenAPI
-  url: https://swagger.io/resources/open-api/
-host: localhost:8080
+  models.UserResponse:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      username:
+        type: string
+    type: object
 info:
   contact:
     email: support@swagger.io
     name: API Support
     url: http://www.swagger.io/support
-  description: This is a sample server celler server.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  termsOfService: http://swagger.io/terms/
-  title: Swagger Example API
-  version: "1.0"
 paths:
   /auth/login:
     post:
@@ -57,7 +57,7 @@ paths:
             $ref: '#/definitions/models.TokensModel'
       summary: Login
       tags:
-      - auth
+      - Auth
   /auth/refresh:
     post:
       consumes:
@@ -72,7 +72,7 @@ paths:
             $ref: '#/definitions/models.TokenModel'
       summary: Refresh tokens
       tags:
-      - auth
+      - Auth
   /auth/register:
     post:
       consumes:
@@ -87,8 +87,96 @@ paths:
             $ref: '#/definitions/models.User'
       summary: Registration
       tags:
-      - auth
-securityDefinitions:
-  BasicAuth:
-    type: basic
+      - Auth
+  /users:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.UserResponse'
+            type: array
+      summary: Get list users
+      tags:
+      - User
+    post:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+      summary: Create new user
+      tags:
+      - User
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: send id delete user
+      parameters:
+      - description: id user
+        example: 1
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: delete user
+      tags:
+      - User
+    get:
+      consumes:
+      - application/json
+      description: send id get user
+      parameters:
+      - description: id user
+        example: 1
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+      summary: get user
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: send id update user
+      parameters:
+      - description: id user
+        example: 1
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+      summary: update user
+      tags:
+      - User
 swagger: "2.0"

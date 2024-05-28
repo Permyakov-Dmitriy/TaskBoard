@@ -20,7 +20,7 @@ type AuthController struct {
 // RegisterHandler godoc
 // @Summary      Registration
 // @Description  save User object
-// @Tags         auth
+// @Tags         Auth
 // @Accept       json
 // @Produce      json
 // @Success      200  {object}  models.User
@@ -58,7 +58,7 @@ func (ac *AuthController) RegisterHandler(c *gin.Context) {
 // LoginHandler godoc
 // @Summary      Login
 // @Description  send username, password get tokens
-// @Tags         auth
+// @Tags         Auth
 // @Accept       json
 // @Produce      json
 // @Success      200  {object}  models.TokensModel
@@ -103,7 +103,7 @@ func (ac *AuthController) LoginHandler(c *gin.Context) {
 // RefreshHandler godoc
 // @Summary      Refresh tokens
 // @Description  save User object
-// @Tags         auth
+// @Tags         Auth
 // @Accept       json
 // @Produce      json
 // @Success      200  {object}  models.TokenModel
