@@ -26,9 +26,9 @@ func (us *UserService) GetUser(id string) (models.User, error) {
 	return user, err
 }
 
-func (us *UserService) GetUserByEmail(email string) (models.User, error) {
+func (us *UserService) GetUserByUsername(username string) (models.User, error) {
 	var user models.User
-	err := us.DB.First(&user, "email = ?", email).Error
+	err := us.DB.First(&user, "username = ?", username).Error
 	return user, err
 }
 

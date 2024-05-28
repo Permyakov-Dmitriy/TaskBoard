@@ -12,3 +12,9 @@ type UserResponse struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
 }
+
+type UserLogin struct {
+	ID       uint   `json:"id"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+}

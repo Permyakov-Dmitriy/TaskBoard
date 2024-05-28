@@ -34,7 +34,7 @@ func (ac *AuthController) RegisterHandler(c *gin.Context) {
 		return
 	}
 
-	if _, err := ac.UserService.GetUserByEmail(validated_user_data.Email); err == nil {
+	if _, err := ac.UserService.GetUserByUsername(validated_user_data.Username); err == nil {
 		c.JSON(http.StatusConflict, gin.H{"error": "User already exists"})
 		return
 	}
@@ -72,7 +72,7 @@ func (ac *AuthController) LoginHandler(c *gin.Context) {
 		return
 	}
 
-	user, err := ac.UserService.GetUserByEmail(validated_user_data.Email)
+	user, err := ac.UserService.GetUserByUsername(validated_user_data.Username)
 	if err != nil {
 		c.JSON(http.StatusConflict, gin.H{"error": err.Error()})
 		return
