@@ -1,4 +1,27 @@
 definitions:
+  models.Task:
+    properties:
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        maxLength: 20
+        type: string
+      priority:
+        maximum: 10
+        minimum: 1
+        type: integer
+      status:
+        type: string
+    required:
+    - description
+    - name
+    - priority
+    - status
+    type: object
   models.TokenModel:
     properties:
       token:
@@ -88,6 +111,133 @@ paths:
       summary: Registration
       tags:
       - Auth
+  /tasks:
+    get:
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Task'
+            type: array
+      summary: get list tasks
+      tags:
+      - Task
+    post:
+      consumes:
+      - application/json
+      description: send Task data create task
+      parameters:
+      - description: ' '
+        in: body
+        name: task
+        required: true
+        schema:
+          $ref: '#/definitions/models.Task'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+      summary: create task
+      tags:
+      - Task
+  /tasks/{id}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: id task
+        example: 1
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+      summary: delete task
+      tags:
+      - Task
+    get:
+      consumes:
+      - application/json
+      description: send id get task
+      parameters:
+      - description: id task
+        example: 1
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+      summary: get task
+      tags:
+      - Task
+    put:
+      consumes:
+      - application/json
+      description: send id update task
+      parameters:
+      - description: id task
+        example: 1
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Task'
+      summary: update user
+      tags:
+      - Task
+  /tasks/ordered:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: field for sort
+        example: '"priority, status, created_at"'
+        in: query
+        name: sort_field
+        required: true
+        type: string
+      - description: type sort
+        example: '"asc, desc"'
+        in: query
+        name: sort_order
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Task'
+            type: array
+      summary: get ordered list tasks
+      tags:
+      - Task
   /users:
     get:
       consumes:

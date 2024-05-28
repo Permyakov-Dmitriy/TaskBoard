@@ -19,6 +19,15 @@ var AllowedSortFields = map[string]bool{
 	"created_at": true,
 }
 
+// CreateTask godoc
+// @Summary      create task
+// @Description	 send Task data create task
+// @Tags         Task
+// @Accept       json
+// @Produce      json
+// @Param task body models.Task true " "
+// @Success      200  {object}  models.Task
+// @Router       /tasks [post]
 func (tc *TaskController) CreateTask(c *gin.Context) {
 	validatedData, exists := c.Get("validatedData")
 	if !exists {
@@ -27,7 +36,7 @@ func (tc *TaskController) CreateTask(c *gin.Context) {
 		return
 	}
 	task := validatedData.(models.Task)
-	
+
 	if err := tc.TaskService.CreateTask(&task); err != nil {
 		log.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -36,6 +45,14 @@ func (tc *TaskController) CreateTask(c *gin.Context) {
 	c.JSON(http.StatusOK, task)
 }
 
+// GetTasks godoc
+// @Summary      get list tasks
+// @Description
+// @Tags         Task
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}  models.Task
+// @Router       /tasks [get]
 func (tc *TaskController) GetTasks(c *gin.Context) {
 	tasks, err := tc.TaskService.GetTasks()
 	if err != nil {
@@ -45,6 +62,16 @@ func (tc *TaskController) GetTasks(c *gin.Context) {
 	c.JSON(http.StatusOK, tasks)
 }
 
+// GetOrderedTasks godoc
+// @Summary      get ordered list tasks
+// @Description
+// @Tags         Task
+// @Accept       json
+// @Produce      json
+// @Param sort_field query string true "field for sort" example("priority, status, created_at")
+// @Param sort_order query string true "type sort" example("asc, desc")
+// @Success      200  {array}  models.Task
+// @Router       /tasks/ordered [get]
 func (tc *TaskController) GetOrderedTasks(c *gin.Context) {
 	sortField := c.DefaultQuery("sort_field", "priority")
 	sortOrder := c.DefaultQuery("sort_order", "asc")
@@ -69,6 +96,15 @@ func (tc *TaskController) GetOrderedTasks(c *gin.Context) {
 	c.JSON(http.StatusOK, tasks)
 }
 
+// GetTask godoc
+// @Summary      get task
+// @Description	 send id get task
+// @Tags         Task
+// @Accept       json
+// @Produce      json
+// @Param id path int true "id task" example(1)
+// @Success      200  {object}  models.Task
+// @Router       /tasks/{id} [get]
 func (tc *TaskController) GetTask(c *gin.Context) {
 	task_id := c.Params.ByName("id")
 	task, err := tc.TaskService.GetTask(task_id)
@@ -79,6 +115,15 @@ func (tc *TaskController) GetTask(c *gin.Context) {
 	c.JSON(http.StatusOK, task)
 }
 
+// UpdateTask godoc
+// @Summary      update user
+// @Description	 send id update task
+// @Tags         Task
+// @Accept       json
+// @Produce      json
+// @Param id path int true "id task" example(1)
+// @Success      200  {object}  models.Task
+// @Router       /tasks/{id} [put]
 func (tc *TaskController) UpdateTask(c *gin.Context) {
 	task_id := c.Param("id")
 
@@ -96,6 +141,15 @@ func (tc *TaskController) UpdateTask(c *gin.Context) {
 	c.JSON(http.StatusOK, task)
 }
 
+// DeleteTask godoc
+// @Summary      delete task
+// @Description
+// @Tags         Task
+// @Accept       json
+// @Produce      json
+// @Param id path int true "id task" example(1)
+// @Success      200  {object}  nil
+// @Router       /tasks/{id} [delete]
 func (tc *TaskController) DeleteTask(c *gin.Context) {
 	task_id := c.Param("id")
 
