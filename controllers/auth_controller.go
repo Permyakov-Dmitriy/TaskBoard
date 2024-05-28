@@ -23,6 +23,7 @@ type AuthController struct {
 // @Tags         Auth
 // @Accept       json
 // @Produce      json
+// @Param user body models.User true " "
 // @Success      200  {object}  models.User
 // @Router       /auth/register [post]
 func (ac *AuthController) RegisterHandler(c *gin.Context) {

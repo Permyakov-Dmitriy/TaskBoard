@@ -101,6 +101,13 @@ paths:
       consumes:
       - application/json
       description: save User object
+      parameters:
+      - description: ' '
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
       produces:
       - application/json
       responses:
