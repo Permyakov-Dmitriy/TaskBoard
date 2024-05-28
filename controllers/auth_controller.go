@@ -97,7 +97,7 @@ func (ac *AuthController) LoginHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"access_token": accessToken, "refresh_token": refreshToken})
+	c.JSON(http.StatusOK, models.TokensModel{AccessToken: accessToken, RefreshToken: refreshToken})
 }
 
 // RefreshHandler godoc
