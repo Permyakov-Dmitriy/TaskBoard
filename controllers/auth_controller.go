@@ -62,6 +62,7 @@ func (ac *AuthController) RegisterHandler(c *gin.Context) {
 // @Tags         Auth
 // @Accept       json
 // @Produce      json
+// @Param user body models.UserLogin true " "
 // @Success      200  {object}  models.TokensModel
 // @Router       /auth/login [post]
 func (ac *AuthController) LoginHandler(c *gin.Context) {

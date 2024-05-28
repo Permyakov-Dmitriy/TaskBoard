@@ -48,6 +48,15 @@ definitions:
     - email
     - username
     type: object
+  models.UserLogin:
+    properties:
+      id:
+        type: integer
+      password:
+        type: string
+      username:
+        type: string
+    type: object
   models.UserResponse:
     properties:
       email:
@@ -71,6 +80,13 @@ paths:
       consumes:
       - application/json
       description: send username, password get tokens
+      parameters:
+      - description: ' '
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.UserLogin'
       produces:
       - application/json
       responses:
