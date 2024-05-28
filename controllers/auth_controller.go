@@ -134,7 +134,7 @@ func (ac *AuthController) RefreshHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"access_token": accessToken})
+	c.JSON(http.StatusOK, models.TokenModel{Token: accessToken})
 }
 
 func (ac *AuthController) SecuredHandler(c *gin.Context) {
