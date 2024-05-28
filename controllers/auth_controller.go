@@ -67,7 +67,7 @@ func (ac *AuthController) RegisterHandler(c *gin.Context) {
 // @Router       /auth/login [post]
 func (ac *AuthController) LoginHandler(c *gin.Context) {
 	validated_data, exists := c.Get("validatedData")
-	validated_user_data := validated_data.(models.User)
+	validated_user_data := validated_data.(models.UserLogin)
 	if !exists {
 		log.Println("Validated data not found")
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Validated data not found"})
