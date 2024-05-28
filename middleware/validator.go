@@ -14,8 +14,8 @@ func ValidatorMiddleware[T any]() gin.HandlerFunc {
 		var data T
 
 		if err := c.ShouldBindJSON(&data); err != nil {
-			log.Println("Invalid JSON")
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+			log.Println(err.Error())
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 			c.Abort()
 			return
 		}
