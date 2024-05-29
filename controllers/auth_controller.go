@@ -138,8 +138,3 @@ func (ac *AuthController) RefreshHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, models.TokenModel{Token: accessToken})
 }
-
-func (ac *AuthController) SecuredHandler(c *gin.Context) {
-	username := c.GetString("username")
-	c.JSON(http.StatusOK, gin.H{"message": "You are authorized", "username": username})
-}
