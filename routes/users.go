@@ -16,6 +16,8 @@ func UsersRoutes(r *gin.RouterGroup, db *gorm.DB) {
 
 	models.AutoMigrate(db, models.User{})
 
+	r.Use(middleware.AuthMiddleware)
+
 	r.GET("/", userController.GetUsers)
 	r.GET("/:id", userController.GetUser)
 	r.POST("/", middleware.ValidatorMiddleware[models.User](), userController.CreateUser)
