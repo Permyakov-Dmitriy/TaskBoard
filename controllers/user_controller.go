@@ -99,6 +99,17 @@ func (uc *UserController) UpdateUser(c *gin.Context) {
 		return
 	}
 
+	auth_username, exists := c.Get("username")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Auth user not found"})
+		return
+	}
+
+	if auth_username != user.Username {
+		c.JSON(http.StatusForbidden, gin.H{"error": "Аccess denied"})
+		return
+	}
+
 	if err := uc.UserService.SaveUpdatedUser(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
