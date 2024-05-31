@@ -1,6 +1,7 @@
 package config
 
 import (
+	"os"
 	"github.com/spf13/viper"
 )
 
@@ -14,7 +15,12 @@ type Config struct {
 var config Config
 
 func LoadConfig() {
-	viper.SetConfigFile(".env")
+	if val, ok := os.LookupEnv("path_env"); ok == false {
+		viper.SetConfigFile(".env")
+	} else {
+		viper.SetConfigFile(val)
+	}
+
 	viper.AutomaticEnv()
 
 	if err := viper.ReadInConfig(); err != nil {
