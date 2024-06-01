@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"net/http"
+	"strconv"
 	"webapp/models"
 	"webapp/services"
 	"webapp/utils"
@@ -70,8 +71,13 @@ func (uc *UserController) GetUsers(c *gin.Context) {
 // @Router       /users/{id} [get]
 func (uc *UserController) GetUser(c *gin.Context) {
 	user_id := c.Params.ByName("id")
+	uint_user_id, err := strconv.ParseUint(user_id, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
 
-	user, err := uc.UserService.GetUser(user_id)
+	user, err := uc.UserService.GetUser(uint(uint_user_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -96,7 +102,7 @@ func (uc *UserController) GetProfile(c *gin.Context) {
 		return
 	}
 
-	user, err := uc.UserService.GetUser(auth_user_id.(string))
+	user, err := uc.UserService.GetUser(auth_user_id.(uint))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -117,10 +123,15 @@ func (uc *UserController) GetProfile(c *gin.Context) {
 // @Router       /users/{id} [put]
 func (uc *UserController) UpdateUser(c *gin.Context) {
 	user_id := c.Param("id")
-
-	user, err := uc.UserService.GetUser(user_id)
+	uint_user_id, err := strconv.ParseUint(user_id, 10, 64)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	user, err := uc.UserService.GetUser(uint(uint_user_id))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
 

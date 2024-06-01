@@ -5,12 +5,14 @@ import (
 	"net/http"
 	"webapp/models"
 	"webapp/services"
+	"webapp/utils"
 
 	"github.com/gin-gonic/gin"
 )
 
 type TaskController struct {
 	TaskService *services.TaskService
+	UserService *services.UserService
 }
 
 var AllowedSortFields = map[string]bool{
@@ -37,12 +39,29 @@ func (tc *TaskController) CreateTask(c *gin.Context) {
 	}
 	task := validatedData.(models.Task)
 
-	if err := tc.TaskService.CreateTask(&task); err != nil {
+	auth_user_id, exists := c.Get("auth_user_id")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Auth user not found"})
+		return
+	}
+
+	user, err := tc.UserService.GetUser(auth_user_id.(uint))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	task_res := utils.TransformSingleModelToResponse[models.TaskModel](&task)
+
+	task_res.UserID = auth_user_id.(uint)
+	task_res.User = user
+
+	if err := tc.TaskService.CreateTask(&task_res); err != nil {
 		log.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, task)
+	c.JSON(http.StatusOK, task_res)
 }
 
 // GetTasks godoc

@@ -10,7 +10,7 @@ type TaskService struct {
 	DB *gorm.DB
 }
 
-func (ts *TaskService) CreateTask(task *models.Task) error {
+func (ts *TaskService) CreateTask(task *models.TaskModel) error {
 	return ts.DB.Create(task).Error
 }
 
