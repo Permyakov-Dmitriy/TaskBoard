@@ -81,6 +81,14 @@ func (uc *UserController) GetUser(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+// GetProfile godoc
+// @Summary      get profile
+// @Description
+// @Tags         User
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  models.UserResponse
+// @Router       /users/me [get]
 func (uc *UserController) GetProfile(c *gin.Context) {
 	auth_username, exists := c.Get("username")
 	if !exists {
