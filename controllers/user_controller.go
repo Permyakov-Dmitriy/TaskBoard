@@ -90,13 +90,13 @@ func (uc *UserController) GetUser(c *gin.Context) {
 // @Success      200  {object}  models.UserResponse
 // @Router       /users/me [get]
 func (uc *UserController) GetProfile(c *gin.Context) {
-	auth_username, exists := c.Get("username")
+	auth_user_id, exists := c.Get("auth_user_id")
 	if !exists {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Auth user not found"})
 		return
 	}
 
-	user, err := uc.UserService.GetUserByUsername(auth_username.(string))
+	user, err := uc.UserService.GetUser(auth_user_id.(string))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
@@ -124,13 +124,13 @@ func (uc *UserController) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	auth_username, exists := c.Get("username")
+	auth_user_id, exists := c.Get("auth_user_id")
 	if !exists {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Auth user not found"})
 		return
 	}
 
-	if auth_username != user.Username {
+	if auth_user_id != user.ID {
 		c.JSON(http.StatusForbidden, gin.H{"error": "Аccess denied"})
 		return
 	}

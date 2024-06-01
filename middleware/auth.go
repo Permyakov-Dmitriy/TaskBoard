@@ -26,7 +26,7 @@ func AuthMiddleware(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	
-	c.Set("username", claims.Username)
+
+	c.Set("auth_user_id", claims.ID)
 	c.Next()
 }
