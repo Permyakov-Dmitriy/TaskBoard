@@ -87,13 +87,13 @@ func (ac *AuthController) LoginHandler(c *gin.Context) {
 
 	config := config.GetConfig()
 
-	accessToken, err := utils.GenerateToken(user.Username, []byte(config.JwtSecretKey), 15*time.Minute)
+	accessToken, err := utils.GenerateToken(user.ID, user.Username, []byte(config.JwtSecretKey), 15*time.Minute)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not generate access token"})
 		return
 	}
 
-	refreshToken, err := utils.GenerateToken(user.Username, []byte(config.RefreshSecretKey), 24*time.Hour)
+	refreshToken, err := utils.GenerateToken(user.ID, user.Username, []byte(config.RefreshSecretKey), 24*time.Hour)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not generate refresh token"})
 		return
@@ -130,7 +130,7 @@ func (ac *AuthController) RefreshHandler(c *gin.Context) {
 		return
 	}
 
-	accessToken, err := utils.GenerateToken(claims.Username, []byte(config.JwtSecretKey), 15*time.Minute)
+	accessToken, err := utils.GenerateToken(claims.ID, claims.Username, []byte(config.JwtSecretKey), 15*time.Minute)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Could not generate access token"})
 		return
