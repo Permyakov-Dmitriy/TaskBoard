@@ -52,7 +52,7 @@ func (tc *TaskController) CreateTask(c *gin.Context) {
 	}
 
 	task_res := utils.TransformSingleModelToResponse[models.TaskModel](&task)
-
+	log.Println(user)
 	task_res.UserID = auth_user_id.(uint)
 	task_res.User = user
 

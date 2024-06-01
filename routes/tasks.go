@@ -12,9 +12,13 @@ import (
 
 func TasksRoutes(r *gin.RouterGroup, db *gorm.DB) {
 	taskService := &services.TaskService{DB: db}
-	taskController := &controllers.TaskController{TaskService: taskService}
+	userService := &services.UserService{DB: db}
+	taskController := &controllers.TaskController{
+		TaskService: taskService,
+		UserService: userService,
+	}
 
-	models.AutoMigrate(db, models.Task{})
+	models.AutoMigrate(db, models.TaskModel{})
 
 	r.Use(middleware.AuthMiddleware)
 
