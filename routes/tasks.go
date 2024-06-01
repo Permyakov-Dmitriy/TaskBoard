@@ -16,6 +16,8 @@ func TasksRoutes(r *gin.RouterGroup, db *gorm.DB) {
 
 	models.AutoMigrate(db, models.Task{})
 
+	r.Use(middleware.AuthMiddleware)
+
 	r.GET("/", taskController.GetTasks)
 	r.GET("/:id", taskController.GetTask)
 	r.GET("/ordered", taskController.GetOrderedTasks)
