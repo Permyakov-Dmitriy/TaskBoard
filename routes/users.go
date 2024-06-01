@@ -20,6 +20,7 @@ func UsersRoutes(r *gin.RouterGroup, db *gorm.DB) {
 
 	r.GET("/", userController.GetUsers)
 	r.GET("/:id", userController.GetUser)
+	r.GET("/me", userController.GetProfile)
 	r.POST("/", middleware.ValidatorMiddleware[models.User](), userController.CreateUser)
 	r.PUT("/:id", middleware.ValidatorMiddleware[models.User](), userController.UpdateUser)
 	r.DELETE("/:id", userController.DeleteUser)
