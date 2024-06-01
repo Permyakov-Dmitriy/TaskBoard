@@ -5,6 +5,7 @@ type User struct {
 	Username string `json:"username" gorm:"unique" binding:"required"`
 	Email    string `json:"email" gorm:"unique" binding:"required" validate:"email"`
 	Password string `json:"password"`
+	Tasks    []Task `json:"tasks" gorm:"foreignKey:UserID"`
 }
 
 type UserResponse struct {

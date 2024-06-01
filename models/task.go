@@ -10,5 +10,10 @@ type Task struct {
 	Description string `json:"description" binding:"required"`
 	Priority    int    `json:"priority" binding:"required" validate:"gte=1,lte=10"`
 	Status      string `json:"status" binding:"required"`
-	CreatedAt   time.Time
+
+	UserID uint `json:"user_id"`
+	User   User `json:"user" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
