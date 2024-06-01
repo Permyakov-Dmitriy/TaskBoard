@@ -81,6 +81,23 @@ func (uc *UserController) GetUser(c *gin.Context) {
 	c.JSON(http.StatusOK, res)
 }
 
+func (uc *UserController) GetProfile(c *gin.Context) {
+	auth_username, exists := c.Get("username")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Auth user not found"})
+		return
+	}
+
+	user, err := uc.UserService.GetUserByUsername(auth_username.(string))
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
+		return
+	}
+
+	res := utils.TransformSingleModelToResponse[models.UserResponse](&user)
+	c.JSON(http.StatusOK, res)
+}
+
 // UpdateUser godoc
 // @Summary      update user
 // @Description	 send id update user
