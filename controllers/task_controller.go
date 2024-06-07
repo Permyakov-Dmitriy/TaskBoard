@@ -114,7 +114,9 @@ func (tc *TaskController) GetOrderedTasks(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, tasks)
+	tasks_res := utils.TransformSliceModelToResponse[models.Task](tasks)
+
+	c.JSON(http.StatusOK, tasks_res)
 }
 
 // GetTask godoc
@@ -133,7 +135,10 @@ func (tc *TaskController) GetTask(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, task)
+
+	task_res := utils.TransformSingleModelToResponse[models.Task](&task)
+
+	c.JSON(http.StatusOK, task_res)
 }
 
 // UpdateTask godoc
@@ -159,7 +164,9 @@ func (tc *TaskController) UpdateTask(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, task)
+	task_res := utils.TransformSingleModelToResponse[models.Task](&task)
+
+	c.JSON(http.StatusOK, task_res)
 }
 
 // DeleteTask godoc

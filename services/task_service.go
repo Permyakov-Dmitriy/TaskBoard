@@ -20,24 +20,24 @@ func (ts *TaskService) GetTasks() ([]models.TaskModel, error) {
 	return tasks, err
 }
 
-func (ts *TaskService) GetSortedTasks(orderClause string) ([]models.Task, error) {
-	var tasks []models.Task
+func (ts *TaskService) GetSortedTasks(orderClause string) ([]models.TaskModel, error) {
+	var tasks []models.TaskModel
 	err := ts.DB.Order(orderClause).Find(&tasks).Error
 	return tasks, err
 }
 
-func (ts *TaskService) GetTask(id string) (models.Task, error) {
-	var task models.Task
+func (ts *TaskService) GetTask(id string) (models.TaskModel, error) {
+	var task models.TaskModel
 	err := ts.DB.First(&task, id).Error
 	return task, err
 }
 
-func (ts *TaskService) SaveUpdatedTask(task *models.Task) error {
+func (ts *TaskService) SaveUpdatedTask(task *models.TaskModel) error {
 	err := ts.DB.Save(&task).Error
 	return err
 }
 
 func (ts *TaskService) DeleteTask(id string) error {
-	err := ts.DB.Delete(&models.Task{}, id).Error
+	err := ts.DB.Delete(&models.TaskModel{}, id).Error
 	return err
 }
