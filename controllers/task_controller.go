@@ -52,7 +52,6 @@ func (tc *TaskController) CreateTask(c *gin.Context) {
 	}
 
 	task_res := utils.TransformSingleModelToResponse[models.TaskModel](&task)
-	log.Println(user)
 	task_res.UserID = auth_user_id.(uint)
 	task_res.User = user
 
@@ -78,7 +77,10 @@ func (tc *TaskController) GetTasks(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, tasks)
+
+	tasks_res := utils.TransformSliceModelToResponse[models.Task](tasks)
+
+	c.JSON(http.StatusOK, tasks_res)
 }
 
 // GetOrderedTasks godoc

@@ -14,8 +14,8 @@ func (ts *TaskService) CreateTask(task *models.TaskModel) error {
 	return ts.DB.Create(task).Error
 }
 
-func (ts *TaskService) GetTasks() ([]models.Task, error) {
-	var tasks []models.Task
+func (ts *TaskService) GetTasks() ([]models.TaskModel, error) {
+	var tasks []models.TaskModel
 	err := ts.DB.Find(&tasks).Error
 	return tasks, err
 }

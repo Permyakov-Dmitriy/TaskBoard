@@ -89,7 +89,7 @@ func (uc *UserController) GetUser(c *gin.Context) {
 
 // GetProfile godoc
 // @Summary      get profile
-// @Description
+// @Description  send id get user
 // @Tags         User
 // @Accept       json
 // @Produce      json

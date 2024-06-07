@@ -1,15 +1,15 @@
 package main
 
 import (
-	"time"
 	"log"
+	"time"
 	"webapp/config"
 	"webapp/database"
 	"webapp/docs"
 	"webapp/routes"
 
-	"github.com/gin-gonic/gin"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
