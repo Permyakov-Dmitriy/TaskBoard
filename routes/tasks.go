@@ -26,6 +26,6 @@ func TasksRoutes(r *gin.RouterGroup, db *gorm.DB) {
 	r.GET("/:id", taskController.GetTask)
 	r.GET("/ordered", taskController.GetOrderedTasks)
 	r.POST("/", middleware.ValidatorMiddleware[models.Task](), taskController.CreateTask)
-	r.PUT("/:id", middleware.ValidatorMiddleware[models.Task](), taskController.UpdateTask)
+	r.PUT("/:id", middleware.ValidatorMiddleware[models.UpdatedTask](), taskController.UpdateTask)
 	r.DELETE("/:id", taskController.DeleteTask)
 }

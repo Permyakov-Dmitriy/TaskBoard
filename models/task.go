@@ -30,3 +30,10 @@ type Task struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
+
+type UpdatedTask struct {
+	Name        string `json:"name" binding:"required" validate:"max=20"`
+	Description string `json:"description" binding:"required"`
+	Priority    int    `json:"priority" binding:"required" validate:"gte=1,lte=10"`
+	Status      string `json:"status" binding:"required"`
+}

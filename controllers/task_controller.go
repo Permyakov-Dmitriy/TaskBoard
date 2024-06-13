@@ -151,20 +151,30 @@ func (tc *TaskController) GetTask(c *gin.Context) {
 // @Success      200  {object}  models.Task
 // @Router       /tasks/{id} [put]
 func (tc *TaskController) UpdateTask(c *gin.Context) {
+	validatedData, exists := c.Get("validatedData")
+	if !exists {
+		log.Println("Validated data not found")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Validated data not found"})
+		return
+	}
+	task := validatedData.(models.UpdatedTask)
+
 	task_id := c.Param("id")
 
-	task, err := tc.TaskService.GetTask(task_id)
+	task_bd, err := tc.TaskService.GetTask(task_id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Task not found"})
 		return
 	}
 
-	if err := tc.TaskService.SaveUpdatedTask(&task); err != nil {
+	updated_task := utils.CopySingleModel(&task, &task_bd)
+
+	if err := tc.TaskService.SaveUpdatedTask(updated_task); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	task_res := utils.TransformSingleModelToResponse[models.Task](&task)
+	task_res := utils.TransformSingleModelToResponse[models.Task](&updated_task)
 
 	c.JSON(http.StatusOK, task_res)
 }

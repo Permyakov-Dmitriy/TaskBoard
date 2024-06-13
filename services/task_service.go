@@ -16,19 +16,19 @@ func (ts *TaskService) CreateTask(task *models.TaskModel) error {
 
 func (ts *TaskService) GetTasks() ([]models.TaskModel, error) {
 	var tasks []models.TaskModel
-	err := ts.DB.Find(&tasks).Error
+	err := ts.DB.Preload("User").Find(&tasks).Error
 	return tasks, err
 }
 
 func (ts *TaskService) GetSortedTasks(orderClause string) ([]models.TaskModel, error) {
 	var tasks []models.TaskModel
-	err := ts.DB.Order(orderClause).Find(&tasks).Error
+	err := ts.DB.Preload("User").Order(orderClause).Find(&tasks).Error
 	return tasks, err
 }
 
 func (ts *TaskService) GetTask(id string) (models.TaskModel, error) {
 	var task models.TaskModel
-	err := ts.DB.First(&task, id).Error
+	err := ts.DB.Preload("User").First(&task, id).Error
 	return task, err
 }
 

@@ -16,3 +16,7 @@ func TransformSliceModelToResponse[ResT any, ModT any](objs []ModT) []ResT {
 	return responseObjects
 }
 
+func CopySingleModel[ResT any, ModT any](obj *ModT, model *ResT) *ResT {
+	copier.Copy(&model, obj)
+	return model
+}
