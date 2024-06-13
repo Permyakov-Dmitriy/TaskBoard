@@ -189,7 +189,24 @@ func (tc *TaskController) UpdateTask(c *gin.Context) {
 // @Success      200  {object}  nil
 // @Router       /tasks/{id} [delete]
 func (tc *TaskController) DeleteTask(c *gin.Context) {
+	auth_user_id, exists := c.Get("auth_user_id")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Auth user not found"})
+		return
+	}
+
 	task_id := c.Param("id")
+
+	task_bd, err := tc.TaskService.GetTask(task_id)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Task not found"})
+		return
+	}
+
+	if auth_user_id != task_bd.UserID {
+		c.JSON(http.StatusForbidden, gin.H{"error": "Аccess denied"})
+		return
+	}
 
 	if err := tc.TaskService.DeleteTask(task_id); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
