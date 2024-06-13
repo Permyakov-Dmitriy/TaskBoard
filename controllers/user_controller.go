@@ -175,9 +175,14 @@ func (uc *UserController) UpdateUser(c *gin.Context) {
 // @Success      200  {object}  nil
 // @Router       /users/{id} [delete]
 func (uc *UserController) DeleteUser(c *gin.Context) {
-	user_id := c.Param("id")
+	auth_user_id, exists := c.Get("auth_user_id")
+	if !exists {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Auth user not found"})
+		return
+	}
+	str_auth_user_id := auth_user_id.(string)
 
-	if err := uc.UserService.DeleteUser(user_id); err != nil {
+	if err := uc.UserService.DeleteUser(str_auth_user_id); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
