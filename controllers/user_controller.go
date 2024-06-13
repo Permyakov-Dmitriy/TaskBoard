@@ -148,8 +148,9 @@ func (uc *UserController) UpdateUser(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Auth user not found"})
 		return
 	}
+	uint_auth_user_id := auth_user_id.(uint)
 
-	if auth_user_id != user.ID {
+	if uint_auth_user_id != user.ID {
 		c.JSON(http.StatusForbidden, gin.H{"error": "Аccess denied"})
 		return
 	}
