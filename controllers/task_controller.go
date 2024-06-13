@@ -194,6 +194,7 @@ func (tc *TaskController) DeleteTask(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Auth user not found"})
 		return
 	}
+	uint_auth_user_id := auth_user_id.(uint)
 
 	task_id := c.Param("id")
 
@@ -203,7 +204,7 @@ func (tc *TaskController) DeleteTask(c *gin.Context) {
 		return
 	}
 
-	if auth_user_id != task_bd.UserID {
+	if uint_auth_user_id != task_bd.UserID {
 		c.JSON(http.StatusForbidden, gin.H{"error": "Аccess denied"})
 		return
 	}
