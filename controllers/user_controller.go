@@ -129,6 +129,14 @@ func (uc *UserController) UpdateUser(c *gin.Context) {
 		return
 	}
 
+	validatedData, exists := c.Get("validatedData")
+	if !exists {
+		log.Println("Validated data not found")
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Validated data not found"})
+		return
+	}
+	user_data := validatedData.(models.UpdatedUser)
+
 	user, err := uc.UserService.GetUser(uint(uint_user_id))
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": err.Error()})
@@ -146,12 +154,14 @@ func (uc *UserController) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	if err := uc.UserService.SaveUpdatedUser(&user); err != nil {
+	updated_user := utils.CopySingleModel(&user_data, &user)
+
+	if err := uc.UserService.SaveUpdatedUser(updated_user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	res := utils.TransformSingleModelToResponse[models.UserResponse](&user)
+	res := utils.TransformSingleModelToResponse[models.UserResponse](updated_user)
 	c.JSON(http.StatusOK, res)
 }
 

@@ -18,3 +18,8 @@ type UserLogin struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
+
+type UpdatedUser struct {
+	Username string `json:"username"`
+	Email    string `json:"email"`
+}
