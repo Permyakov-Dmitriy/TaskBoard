@@ -1,4 +1,4 @@
-# 🌟 TaskBoard 🌟
+# 🌟 TaskBoard(в разработке) 🌟
 
 ![Go](https://img.shields.io/badge/Go-1.18%2B-blue)
 ![Gin](https://img.shields.io/badge/Gin-%E2%9C%94%EF%B8%8F-green)
